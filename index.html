@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Oracle - AI Astrologer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="hero-container">
+            <div class="stars-bg"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="cosmic-text">Cosmic Oracle</span>
+                    <span class="subtitle">Your AI Astrology Guide</span>
+                </h1>
+                <p class="hero-description">
+                    Discover your cosmic blueprint and unlock the mysteries of your destiny through the ancient wisdom of astrology.
+                </p>
+                <button class="btn btn--primary btn--lg hero-btn" onclick="startJourney()">
+                    <span>Begin Your Journey</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Birth Details Form -->
+    <section id="form-section" class="form-section hidden">
+        <div class="container">
+            <div class="form-container">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">
+                        Step <span id="current-step">1</span> of <span id="total-steps">4</span>
+                    </div>
+                </div>
+
+                <form id="birth-form" class="birth-form">
+                    <!-- Step 1: Name -->
+                    <div class="form-step active" data-step="1">
+                        <h2>What's your name?</h2>
+                        <div class="form-group">
+                            <input type="text" id="name" class="form-control" required>
+                            <label for="name" class="floating-label">Your full name</label>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Date -->
+                    <div class="form-step" data-step="2">
+                        <h2>When were you born?</h2>
+                        <div class="form-group">
+                            <input type="date" id="birth-date" class="form-control" required>
+                            <label for="birth-date" class="floating-label">Birth date</label>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Time -->
+                    <div class="form-step" data-step="3">
+                        <h2>What time were you born?</h2>
+                        <div class="form-group">
+                            <input type="time" id="birth-time" class="form-control" required>
+                            <label for="birth-time" class="floating-label">Birth time</label>
+                        </div>
+                        <p class="form-hint">If you don't know the exact time, 12:00 PM works fine</p>
+                    </div>
+
+                    <!-- Step 4: Place -->
+                    <div class="form-step" data-step="4">
+                        <h2>Where were you born?</h2>
+                        <div class="form-group">
+                            <input type="text" id="birth-place" class="form-control" required>
+                            <label for="birth-place" class="floating-label">City, Country</label>
+                        </div>
+                    </div>
+
+                    <div class="form-navigation">
+                        <button type="button" id="prev-btn" class="btn btn--secondary" onclick="previousStep()" disabled>
+                            Previous
+                        </button>
+                        <button type="button" id="next-btn" class="btn btn--primary" onclick="nextStep()">
+                            Next
+                        </button>
+                        <button type="submit" id="submit-btn" class="btn btn--primary hidden">
+                            Reveal My Destiny
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Section -->
+    <section id="loading-section" class="loading-section hidden">
+        <div class="loading-container">
+            <div class="cosmic-loader">
+                <div class="planet planet-1"></div>
+                <div class="planet planet-2"></div>
+                <div class="planet planet-3"></div>
+                <div class="orbit orbit-1"></div>
+                <div class="orbit orbit-2"></div>
+                <div class="orbit orbit-3"></div>
+            </div>
+            <h2 class="loading-text">Calculating your cosmic blueprint...</h2>
+            <p class="loading-subtext">Aligning the stars and planets for your reading</p>
+        </div>
+    </section>
+
+    <!-- Results Dashboard -->
+    <section id="results-section" class="results-section hidden">
+        <div class="container">
+            <div class="results-header">
+                <h1 id="user-name-display">Welcome back</h1>
+                <p class="results-subtitle">Here's your personalized cosmic reading</p>
+            </div>
+
+            <div class="results-grid">
+                <!-- Zodiac Sign Card -->
+                <div class="result-card zodiac-card">
+                    <div class="card-header">
+                        <h3>Your Zodiac Sign</h3>
+                        <div class="zodiac-symbol" id="zodiac-symbol">♈</div>
+                    </div>
+                    <div class="card-content">
+                        <h4 id="zodiac-name">Aries</h4>
+                        <p id="zodiac-dates">March 21 - April 19</p>
+                        <div class="zodiac-details">
+                            <div class="detail-item">
+                                <span class="label">Element:</span>
+                                <span id="zodiac-element">Fire</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Planet:</span>
+                                <span id="zodiac-planet">Mars</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personality Card -->
+                <div class="result-card personality-card">
+                    <div class="card-header">
+                        <h3>Personality Insights</h3>
+                    </div>
+                    <div class="card-content">
+                        <p id="personality-text">Your personality insights will appear here</p>
+                        <div class="traits-container">
+                            <h5>Key Traits:</h5>
+                            <div class="traits-list" id="traits-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compatibility Card -->
+                <div class="result-card compatibility-card">
+                    <div class="card-header">
+                        <h3>Compatibility</h3>
+                    </div>
+                    <div class="card-content">
+                        <h5>Most Compatible With:</h5>
+                        <div class="compatibility-list" id="compatibility-list"></div>
+                        <div class="lucky-section">
+                            <h5>Lucky Elements:</h5>
+                            <div class="lucky-items">
+                                <div class="lucky-item">
+                                    <span class="label">Numbers:</span>
+                                    <span id="lucky-numbers"></span>
+                                </div>
+                                <div class="lucky-item">
+                                    <span class="label">Colors:</span>
+                                    <span id="lucky-colors"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Career Card -->
+                <div class="result-card career-card">
+                    <div class="card-header">
+                        <h3>Career & Life Path</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="career-info">
+                            <h5>Ideal Career Fields:</h5>
+                            <p id="career-fields">Your ideal career paths</p>
+                        </div>
+                        <div class="strengths-weaknesses">
+                            <div class="strength-section">
+                                <h5>Strengths:</h5>
+                                <div class="strength-list" id="strength-list"></div>
+                            </div>
+                            <div class="weakness-section">
+                                <h5>Areas for Growth:</h5>
+                                <div class="weakness-list" id="weakness-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ask Question Section -->
+            <div class="question-section">
+                <h2>Ask the Oracle</h2>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="oracle-message">
+                            <div class="message-avatar">🔮</div>
+                            <div class="message-content">
+                                <p>Greetings! I am the Cosmic Oracle. Ask me anything about your future, relationships, career, or any aspect of your life you seek guidance on.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <input type="text" id="question-input" class="chat-input" placeholder="Ask me anything...">
+                            <button id="send-question" class="send-btn" onclick="sendQuestion()">
+                                <span>Send</span>
+                            </button>
+                        </div>
+                        <div class="suggested-questions">
+                            <h5>Popular questions:</h5>
+                            <div class="question-chips" id="question-chips"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
